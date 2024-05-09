@@ -1,0 +1,9 @@
+Kafka getting started:
+https://kafka.apache.org/quickstart
+https://www.baeldung.com/kafka-shift-from-zookeeper-to-kraft
+https://hellokoding.com/kafka-connect-sinks-data-to-postgres-example-with-avro-schema-registry-and-python/
+https://www.baeldung.com/kafka-connectors-guide
+
+Postgres docker:
+https://www.baeldung.com/ops/postgresql-docker-setup
+https://hub.docker.com/_/postgres/
