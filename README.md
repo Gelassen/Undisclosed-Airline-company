@@ -12,6 +12,19 @@ $ sudo apt-get install postgresql-client
 $ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
 ```
 
+To run Kafka:
+```
+$ docker pull apache/kafka:3.7.0
+$ docker run -p 9092:9092 apache/kafka:3.7.0
+```
+
+To connect to the shell and execute shell command:
+```
+$ docker container ps 
+$ docker exec -it <container_id> /bin/sh
+(shell) $ ./kafka-topics.sh --create --topic messages --bootstrap-server localhost:9092
+```
+
 ### Start-up
 ```
 $ git clone https://github.com/Gelassen/Aeroflot.git
