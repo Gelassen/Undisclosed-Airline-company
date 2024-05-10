@@ -11,8 +11,8 @@ CREATE TABLE "public"."Inventory" (
     "time" timestamptz NOT NULL,
     "flight" character varying(256) NOT NULL,
     "departure" timestamptz NOT NULL,
-    "flight booking class" text NOT NULL,
-    "idle seats count" integer NOT NULL,
+    "flight_booking_class" text NOT NULL,
+    "idle_seats_count" integer NOT NULL,
     CONSTRAINT "Inventory_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
 
