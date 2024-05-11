@@ -4,6 +4,12 @@ https://www.baeldung.com/kafka-shift-from-zookeeper-to-kraft
 https://hellokoding.com/kafka-connect-sinks-data-to-postgres-example-with-avro-schema-registry-and-python/
 https://www.baeldung.com/kafka-connectors-guide
 https://betterdatascience.com/apache-kafka-in-python-how-to-stream-data-with-producers-and-consumers/
+https://kafka-python.readthedocs.io/en/master/usage.html
+https://github.com/apache/kafka/blob/dc189a39cc79d45c59fa1762ca9379bdbd85ee34/examples/src/main/java/kafka/examples/Consumer.java
+
+Kafka connect:
+https://github.com/Aiven-Open/jdbc-connector-for-apache-kafka
+https://kafka.apache.org/documentation.html#connect
 
 Postgres docker:
 https://www.baeldung.com/ops/postgresql-docker-setup

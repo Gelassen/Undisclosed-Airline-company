@@ -13,7 +13,7 @@ CREATE TABLE "public"."Inventory" (
     "departure" timestamptz NOT NULL,
     "flight_booking_class" text NOT NULL,
     "idle_seats_count" integer NOT NULL,
-    CONSTRAINT "Inventory_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Inventory_pkey" PRIMARY KEY ("flight", "flight_booking_class")
 ) WITH (oids = false);
 
 
