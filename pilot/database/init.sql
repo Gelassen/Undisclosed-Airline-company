@@ -4,7 +4,7 @@
 
 DROP TABLE IF EXISTS "Inventory";
 DROP SEQUENCE IF EXISTS "Inventory_id_seq";
-CREATE SEQUENCE "Inventory_id_seq" INCREMENT  MINVALUE  MAXVALUE  CACHE ;
+CREATE SEQUENCE "Inventory_id_seq" INCREMENT BY 1 MINVALUE 1 NO MAXVALUE CACHE 1;
 
 CREATE TABLE "public"."Inventory" (
     "id" integer DEFAULT nextval('"Inventory_id_seq"') NOT NULL,

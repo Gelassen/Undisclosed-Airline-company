@@ -13,14 +13,24 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.3
 
-  adminer:
-    image: adminer
-    restart: always
+  kafka:
+    image: apache/kafka:3.7.0
     ports:
-      - 8080:8080
+      - 9092:9092
     networks:
       priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.2
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     priv-aeroflot-pilot-net:
+  #       ipv4_address: 172.16.254.1
 
 networks:
   priv-aeroflot-pilot-net:
