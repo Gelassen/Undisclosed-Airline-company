@@ -27,8 +27,9 @@ $ docker exec -it <container_id> /bin/sh
 
 ### Start-up
 ```
-$ git clone https://github.com/Gelassen/Aeroflot.git
-$ cd Aeroflot/pilot && docker-compose up
+$ docker-compose up
+<!-- $ git clone https://github.com/Gelassen/Aeroflot.git
+$ cd Aeroflot/pilot && docker-compose up -->
 ```
 
 Endpoint of database server:

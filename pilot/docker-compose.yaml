@@ -19,9 +19,37 @@ services:
     image: apache/kafka:3.7.0
     ports:
       - 9092:9092
+    volumes:
+      - ./kafka/config:/opt/kafka/custom-config
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.2
+
+  # kafka-connect:
+  #   image: apache/kafka:3.7.0
+  #   command: bash -c "bin/connect-distributed.sh config/connect-distributed.properties"
+  #   ports:
+  #     - "8083:8083"
+  #   volumes:
+  #     - ./kafka/connect-plugins:/opt/kafka/connect-plugins
+  #     - ./kafka/connect-distributed.properties:/opt/kafka/config/connect-distributed.properties
+  #   networks:
+  #     priv-aeroflot-pilot-net:
+  #       pv4_address: 172.16.254.4
+  #   depends_on:
+  #     - kafka
+  
+  kafka-connect:
+    image: apache/kafka:3.7.0
+    command: bash -c "bin/connect-standalone.sh config/connect-standalone.properties" 
+    volumes:
+      - ./kafka/connect-plugins:/opt/kafka/connect-plugins
+      - ./kafka/connect-standalone.properties:/opt/kafka/config/connect-standalone.properties
+    networks:
+      priv-aeroflot-pilot-net:
+        pv4_address: 172.16.254.4
+    depends_on:
+      - kafka
 
   # adminer:
   #   image: adminer

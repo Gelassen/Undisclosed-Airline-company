@@ -10,6 +10,7 @@ https://github.com/apache/kafka/blob/dc189a39cc79d45c59fa1762ca9379bdbd85ee34/ex
 Kafka connect:
 https://github.com/Aiven-Open/jdbc-connector-for-apache-kafka
 https://kafka.apache.org/documentation.html#connect
+https://www.confluent.io/hub/debezium/debezium-connector-postgresql/
 
 Postgres docker:
 https://www.baeldung.com/ops/postgresql-docker-setup
@@ -17,3 +18,5 @@ https://hub.docker.com/_/postgres/
 
 Python virtual environment:
 https://www.pythonguis.com/tutorials/python-virtual-environments/#explore-how-python-virtual-environments-work
+
+$ source venv/bin/activate
