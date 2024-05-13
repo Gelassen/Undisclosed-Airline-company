@@ -11,6 +11,7 @@ Kafka connect:
 https://github.com/Aiven-Open/jdbc-connector-for-apache-kafka
 https://kafka.apache.org/documentation.html#connect
 https://www.confluent.io/hub/debezium/debezium-connector-postgresql/
+https://www.baeldung.com/kafka-docker-connection
 
 Postgres docker:
 https://www.baeldung.com/ops/postgresql-docker-setup
