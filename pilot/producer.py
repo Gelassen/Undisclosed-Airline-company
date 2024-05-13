@@ -11,7 +11,7 @@ def serializer(message):
 # TODO expose endpoint into config file 
 # TODO expose topic name into config file
 producer = KafkaProducer(
-    bootstrap_servers=['localhost:9092'],
+    bootstrap_servers=['172.16.254.2:9092'],
     value_serializer=serializer
 )
 

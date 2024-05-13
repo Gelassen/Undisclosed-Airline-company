@@ -6,7 +6,7 @@ from kafka import KafkaConsumer
 if __name__ == '__main__':
     consumer = KafkaConsumer(
         'messages',
-        bootstrap_servers='localhost:9092',
+        bootstrap_servers='172.16.254.2:9092',
         auto_offset_reset='earliest'
     )
     for message in consumer: 
