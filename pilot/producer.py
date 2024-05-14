@@ -8,6 +8,15 @@ from kafka import KafkaProducer
 def serializer(message):
     return json.dumps(message).encode('utf-8')
 
+def on_send_success(record_metadata):
+    print("Message sent successfully.")
+    print("Topic:", record_metadata.topic)
+    print("Partition:", record_metadata.partition)
+    print("Offset:", record_metadata.offset)
+
+def on_send_error(excp):
+    log.error('I am an errback', exc_info=excp)
+
 # TODO expose endpoint into config file 
 # TODO expose topic name into config file
 producer = KafkaProducer(
@@ -20,16 +29,8 @@ if __name__ == '__main__':
     while True:
         new_event = generate_inventory() 
         print(f'Produce new event @ {datetime.now()} : payload = {str(new_event)}')
-        # producer.send('messages', new_event)
-        producer.send('my-topic', b'raw_bytes').add_callback(on_send_success).add_errback(on_send_error)
+        producer.send('messages', new_event).add_callback(on_send_success).add_errback(on_send_error)
 
         time_to_sleep = random.randint(1,7)
         time.sleep(time_to_sleep)
 
-def on_send_success(record_metadata):
-    print(record_metadata.topic)
-    print(record_metadata.partition)
-    print(record_metadata.offset)
-
-def on_send_error(excp):
-    log.error('I am an errback', exc_info=excp)
