@@ -27,9 +27,9 @@ idle_seats = list(range(0, 42))
 def generate_inventory() -> dict:
     idle_seats_count = random.choice(idle_seats)
     return {
-        'time' : random.choice(time) * 1000, # return back to ms
-        'flight' : random.choice(flights),
-        'departure' : random.choice(departures) * 1000, # return back to ms
-        'flight_booking_class' : random.choice(flight_booking_class),
-        'idle_seats_count' : idle_seats_count 
+        "time" : random.choice(time) * 1000, # return back to ms
+        "flight" : random.choice(flights),
+        "departure" : random.choice(departures) * 1000, # return back to ms
+        "flight_booking_class" : random.choice(flight_booking_class),
+        "idle_seats_count" : idle_seats_count 
     }

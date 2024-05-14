@@ -9,6 +9,9 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.2
 
   kafka:
     image: confluentinc/cp-kafka:6.2.0
@@ -21,7 +24,8 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.254.3:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       # KAFKA_DEFAULT_REPLICATION_FACTOR: 1
       # CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
@@ -29,6 +33,9 @@ services:
       # KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.3
 
   connect:
     image: confluentinc/cp-kafka-connect:6.2.0
@@ -58,9 +65,13 @@ services:
     volumes:
       - ./kafka-connect/connectors:/usr/share/confluent-hub-components
       - ./kafka-connect/config:/etc/kafka-connect
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.4
 
   postgres:
     image: 'postgres:16.2-alpine'
+    container_name: postgres 
     restart: always
     shm_size: 128mb
     ports:
@@ -70,8 +81,15 @@ services:
     volumes:
       - ./database/data:/var/lib/postgresql/data/
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-    # networks:
-    #   priv-aeroflot-pilot-net:
-    #     ipv4_address: 172.16.254.3
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.5
     depends_on:
       - kafka
+
+networks:
+  priv-aeroflot-pilot-net:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 172.16.254.0/28  

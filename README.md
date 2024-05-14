@@ -6,12 +6,6 @@ $ docker pull postgres:16.2
 $ docker run -itd -e POSTGRES_USER=aeroflot -e POSTGRES_PASSWORD=test -p 5432:5432 -v ./database/data:/var/lib/postgresql/data --name postgresql postgres:16.2
 ```
 
-To query postgres from console:
-```
-$ sudo apt-get install postgresql-client
-$ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
-```
-
 To run Kafka:
 ```
 $ docker pull apache/kafka:3.7.0
@@ -36,6 +30,21 @@ Endpoint of database server:
 ```
 $ docker container ps
 $ docker inspect <container id> | grep IPAddress
+```
+
+### Manual connection to docker postgres
+```
+$ docker container ps
+$ docker exec -it <container_id> bash
+```
+\l to display all the schema
+
+\dt to display all tables. 
+
+To query postgres from console:
+```
+$ sudo apt-get install postgresql-client
+$ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
 ```
 
 ### Notes
