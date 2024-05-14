@@ -1,0 +1,16 @@
+{
+    "name": "postgres-sink-connector",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+      "tasks.max": "1",
+      "topics": "messages",
+      "connection.url": "jdbc:postgresql://postgres:5432/aeroflot",
+      "connection.user": "aeroflot",
+      "connection.password": "test",
+      "auto.create": "true",
+      "insert.mode": "upsert",
+      "pk.mode": "record_value",
+      "pk.fields": "flight,flight_booking_class"
+    }
+  }
+  
