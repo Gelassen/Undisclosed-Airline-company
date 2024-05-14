@@ -12,6 +12,7 @@ https://github.com/Aiven-Open/jdbc-connector-for-apache-kafka
 https://kafka.apache.org/documentation.html#connect
 https://www.confluent.io/hub/debezium/debezium-connector-postgresql/
 https://www.baeldung.com/kafka-docker-connection
+https://github.com/confluentinc/cp-demo/blob/7.5.1-post/docker-compose.yml
 
 Postgres docker:
 https://www.baeldung.com/ops/postgresql-docker-setup
@@ -19,5 +20,8 @@ https://hub.docker.com/_/postgres/
 
 Python virtual environment:
 https://www.pythonguis.com/tutorials/python-virtual-environments/#explore-how-python-virtual-environments-work
+
+Chatgpt was used to find a right configuration for Kafka and Kafka Connect
+https://chatgpt.com/
 
 $ source venv/bin/activate
