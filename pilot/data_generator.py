@@ -24,12 +24,31 @@ flight_booking_class = [
 
 idle_seats = list(range(0, 42))
 
+def wrap_data_in_kafka_connect_format(data) -> dict:
+    return {
+        "schema": {
+            "type": "struct",
+            "fields": [
+            {"type": "int64", "optional": False, "field": "time"},
+            {"type": "string", "optional": False, "field": "flight"},
+            {"type": "int64", "optional": False, "field": "departure"},
+            {"type": "string", "optional": False, "field": "flight_booking_class"},
+            {"type": "int32", "optional": False, "field": "idle_seats_count"}
+            ],
+            "optional": False,
+            "name": "InventorySchema"
+        },
+        "payload": data
+    }
+
+
 def generate_inventory() -> dict:
     idle_seats_count = random.choice(idle_seats)
-    return {
+    data = {
         "time" : random.choice(time) * 1000, # return back to ms
         "flight" : random.choice(flights),
         "departure" : random.choice(departures) * 1000, # return back to ms
         "flight_booking_class" : random.choice(flight_booking_class),
         "idle_seats_count" : idle_seats_count 
     }
+    return wrap_data_in_kafka_connect_format(data)

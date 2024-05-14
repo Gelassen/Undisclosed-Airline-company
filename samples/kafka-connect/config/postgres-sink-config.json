@@ -12,5 +12,4 @@
       "pk.mode": "record_value",
       "pk.fields": "flight,flight_booking_class"
     }
-  }
-  
+}

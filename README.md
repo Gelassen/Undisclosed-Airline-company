@@ -31,6 +31,24 @@ Endpoint of database server:
 $ docker container ps
 $ docker inspect <container id> | grep IPAddress
 ```
+### Command to run to enable Kafka connection
+It should be done automatically by mounting ```postgres-sink-config.json```, but it is not and this issue has not been figured out yet, REST API call as an alternative approach should be used instead:
+```
+curl -i -X PUT -H  "Content-Type:application/json" \
+    172.16.254.4:8083/connectors/postgres-sink-connector/config \
+    -d '{
+      "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+      "tasks.max": "1",
+      "topics": "messages",
+      "connection.url": "jdbc:postgresql://postgres:5432/aeroflot",
+      "connection.user": "aeroflot",
+      "connection.password": "test",
+      "auto.create": "true",
+      "insert.mode": "upsert",
+      "pk.mode": "record_value",
+      "pk.fields": "flight,flight_booking_class"
+    }'
+```
 
 ### Manual connection to docker postgres
 ```
@@ -51,3 +69,4 @@ $ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
 1. .env files SHOULD NOT be checked-in in the repository. The only reason why they are here is demo purpose and test nature of this config. For Github CI special secrets section should be used.
 2. ```KRaft``` is a preferable mechanism to use instead of ```Zookeeper```, although the current Kafka release (apache/kafka:3.7.0) still rely on ```Zookeeper```. We have to use ```Zookeeper``` right now, but in the next release ```Kafka 4.0``` it is going to be removed. 
 3. Pure implementation of ```Kafka``` and ```Kafka Connect``` faced with unresolved yet issues between ```KRaft``` and ```Zookeeper``. For mre details, please refer https://stackoverflow.com/questions/78472810/how-to-run-pure-kafka-and-kafka-connect-over-docker-compose#78472810
+4. External to docker Kafka producers using docker hostnames instead of direct IP addresses. They are not resolved automatically and possible workarounds are to try to modify hosts file on the Host machine or replace hostnames by direct ip addresses in advertise listeners properties
