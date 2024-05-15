@@ -62,10 +62,12 @@ services:
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
       CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CLASSPATH: /usr/share/java/postgresql-42.2.23.jar:/usr/share/confluent-hub-components/kafka-connect-jdbc-10.7.6.jar
     volumes:
       - ./kafka-connect/connectors:/usr/share/confluent-hub-components
       - ./kafka-connect/config:/etc/kafka-connect
-      - ./kafka-connect/jdbc-driver/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.23.jar
+      - ./kafka-connect/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.23.jar
+      # - ./kafka-connect/jdbc-driver/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.3.jar
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.4
