@@ -21,7 +21,5 @@ https://hub.docker.com/_/postgres/
 Python virtual environment:
 https://www.pythonguis.com/tutorials/python-virtual-environments/#explore-how-python-virtual-environments-work
 
-Chatgpt was used to find a right configuration for Kafka and Kafka Connect
+Chatgpt was used to find a right configuration for Kafka, Kafka Connect and implementation of REST service
 https://chatgpt.com/
-
-$ source venv/bin/activate

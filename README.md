@@ -37,8 +37,8 @@ curl -X GET http://172.16.254.4:8083/connectors/postgres-sink-connector/config
 
 Till this moment Kafka queue should be established. Now prepare python project's environment:
 ```
-$ pip install -r requirements.txt
 $ python -m venv ./venv
+$ pip install -r requirements.txt
 ``` 
 
 To run Consumer and Producer, execute commands below in two separate terminals:
@@ -66,6 +66,18 @@ To query postgres from console:
 ```
 $ sudo apt-get install postgresql-client
 $ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
+```
+
+### Deploy REST service
+```
+$ cd /pilot/REST
+$ python -m venv ./venv
+$ pip install -r requirements.txt
+```
+
+To run service on localhost:8000:
+```
+uvicorn app:app --reload
 ```
 
 ### Docker hot commands

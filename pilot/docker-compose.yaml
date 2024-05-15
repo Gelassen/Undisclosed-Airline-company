@@ -90,6 +90,17 @@ services:
     depends_on:
       - kafka
 
+  rest-server:
+    container_name: rest-server
+    build:
+      context: ./REST
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.6
+
 networks:
   priv-aeroflot-pilot-net:
     driver: bridge
