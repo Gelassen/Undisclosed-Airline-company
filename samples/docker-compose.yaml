@@ -65,6 +65,7 @@ services:
     volumes:
       - ./kafka-connect/connectors:/usr/share/confluent-hub-components
       - ./kafka-connect/config:/etc/kafka-connect
+      - ./kafka-connect/jdbc-driver/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.23.jar
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.4
