@@ -35,7 +35,13 @@ Verify Kafka config:
 curl -X GET http://172.16.254.4:8083/connectors/postgres-sink-connector/config
 ```
 
-Till this moment Kafka queue should be established. To run Consumer and Producer, execute commands below in two separate terminals:
+Till this moment Kafka queue should be established. Now prepare python project's environment:
+```
+$ pip install -r requirements.txt
+$ python -m venv ./venv
+``` 
+
+To run Consumer and Producer, execute commands below in two separate terminals:
 ```
 $ source venv/bin/activate && python consumer.py
 $ source venv/bin/activate && python producer.py

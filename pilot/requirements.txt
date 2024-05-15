@@ -1,1 +1,9 @@
+certifi==2024.2.2
+charset-normalizer==3.3.2
+confluent-kafka==2.4.0
+idna==3.7
 kafka-python==2.0.2
+pip==22.0.2
+requests==2.31.0
+setuptools==59.6.0
+urllib3==2.2.1
