@@ -4,6 +4,7 @@ confluent-kafka==2.4.0
 idna==3.7
 kafka-python==2.0.2
 pip==22.0.2
+python-dotenv==1.0.1
 requests==2.31.0
 setuptools==59.6.0
 urllib3==2.2.1

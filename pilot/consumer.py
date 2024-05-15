@@ -1,14 +1,21 @@
 import json 
 from json import JSONDecodeError
 from kafka import KafkaConsumer
+from dotenv import load_dotenv
+import os
 
-# TODO expose endpoint into config file
+load_dotenv("config/.env")
+
+kafka_host = os.environ.get('KAFKA_BROKER_HOST')
+kafka_port = os.environ.get('KAFKA_BROKER_PORT')
+kafka_topic = os.environ.get('KAFKA_TOPIC')
+
 # TODO consumer should update record in database to give correct view on how much seats are left
 if __name__ == '__main__':
     try:
         consumer = KafkaConsumer(
-            'Inventory',
-            bootstrap_servers='172.16.254.3:9092',
+            kafka_topic,
+            bootstrap_servers=f"{kafka_host}:{kafka_port}",
             auto_offset_reset='earliest'
         )
         for message in consumer: 
