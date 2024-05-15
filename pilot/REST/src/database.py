@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
-load_dotenv("../database/.env")
+load_dotenv("../conf/.env")
 
 Base = declarative_base()
 class InventoryDB(Base):
