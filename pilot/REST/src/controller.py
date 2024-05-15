@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Query
-from models import Inventory
-from database import SessionLocal, InventoryDB
+from .models import Inventory
+from .database import SessionLocal, InventoryDB
 
 router = APIRouter()
 
