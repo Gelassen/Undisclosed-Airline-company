@@ -1,6 +1,10 @@
 from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+import os
+
+load_dotenv("../database/.env")
 
 Base = declarative_base()
 class InventoryDB(Base):
@@ -12,7 +16,11 @@ class InventoryDB(Base):
     flight_booking_class = Column(Text, nullable=False)
     idle_seats_count = Column(Integer, nullable=False)
 
-# TODO move configs into separate file 
-SQLALCHEMY_DATABASE_URL = "postgresql://aeroflot:test@172.16.254.5/aeroflot"
+db_username = os.environ.get('POSTGRES_USER')
+db_password = os.environ.get('POSTGRES_PASSWORD')
+db_name = os.environ.get('POSTGRES_DB')
+db_host = os.environ.get('POSTGRESS_HOST')
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{db_username}:{db_password}@{db_host}/{db_name}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
