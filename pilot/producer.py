@@ -29,7 +29,7 @@ if __name__ == '__main__':
     while True:
         new_event = generate_inventory() 
         print(f'Produce new event @ {datetime.now()} : payload = {str(new_event)}')
-        producer.send('messages', new_event).add_callback(on_send_success).add_errback(on_send_error)
+        producer.send('Inventory', new_event).add_callback(on_send_success).add_errback(on_send_error)
 
         time_to_sleep = random.randint(1,7)
         time.sleep(time_to_sleep)

@@ -1,7 +1,80 @@
 version: '3.3'
 services:
-  database:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.2
+
+  kafka:
+    image: confluentinc/cp-kafka:6.2.0
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.254.3:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      # CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      # KAFKA_CONFLUENT_METADATA_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.3
+
+  connect:
+    image: confluentinc/cp-kafka-connect:6.2.0
+    container_name: connect
+    hostname: connect
+    depends_on:
+      - kafka
+      - postgres
+    ports:
+      - "8083:8083"
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: "kafka:9092"
+      CONNECT_REST_ADVERTISED_HOST_NAME: 172.16.254.4
+      CONNECT_GROUP_ID: connect-cluster
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      # CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      # CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
+      CONNECT_REPLICATION_FACTOR: 1
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CLASSPATH: /usr/share/java/postgresql-42.2.23.jar:/usr/share/confluent-hub-components/kafka-connect-jdbc-10.7.6.jar
+    volumes:
+      - ./kafka-connect/connectors:/usr/share/confluent-hub-components
+      - ./kafka-connect/config:/etc/kafka-connect
+      - ./kafka-connect/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.23.jar
+      # - ./kafka-connect/jdbc-driver/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.3.jar
+    networks:
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.4
+
+  postgres:
     image: 'postgres:16.2-alpine'
+    container_name: postgres 
     restart: always
     shm_size: 128mb
     ports:
@@ -13,80 +86,9 @@ services:
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       priv-aeroflot-pilot-net:
-        ipv4_address: 172.16.254.3
+        ipv4_address: 172.16.254.5
     depends_on:
       - kafka
-      # - kafka-connect
-
-  # zookeeper:
-  #   image: zookeeper:3.7.0
-  #   ports:
-  #     - "2181:2181"
-  #   volumes:
-  #     # - ./kafka/zookeeper/data:/var/lib/zookeeper/data
-  #     - ./kafka/zookeeper/data:/data  
-  #   environment:
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #     ZOOKEEPER_TICK_TIME: 2000
-  #   networks:
-  #     priv-aeroflot-pilot-net:
-  #       ipv4_address: 172.16.254.5
-
-  kafka:
-    image: apache/kafka:3.7.0
-    ports:
-      - "9092:9092"  # Kafka listener port
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-    volumes:
-      # - ./kafka/connect-plugins:/opt/kafka/connect-plugins
-      # - ./kafka/config:/opt/kafka/custom-config
-      - ./kafka/logs:/var/lib/kafka/data
-    # environment:
-    #   KAFKA_BROKER_ID: 1
-    #   KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
-    #   KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-    #   KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-    #   KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-    #   KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    #   KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    #   KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-    #   KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    networks:
-      priv-aeroflot-pilot-net:
-        ipv4_address: 172.16.254.2
-    # depends_on:
-    #   - zookeeper
-  
-  # kafka-connect:
-  #   image: apache/kafka:3.7.0
-  #   command: bash -c "/opt/kafka/bin/connect-standalone.sh /opt/kafka/config/connect-standalone.properties" 
-  #   volumes:
-  #     - ./kafka/connect-plugins:/opt/kafka/connect-plugins
-  #     - ./kafka/connect-standalone.properties:/opt/kafka/config/connect-standalone.properties
-  #     - ./kafka/connect-standalone-worker.properties:/opt/kafka/config/connect-standalone-worker.properties
-  #   networks:
-  #     priv-aeroflot-pilot-net:
-  #       ipv4_address: 172.16.254.4
-  #   depends_on:
-  #     - kafka
-
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #     priv-aeroflot-pilot-net:
-  #       ipv4_address: 172.16.254.1
 
 networks:
   priv-aeroflot-pilot-net:

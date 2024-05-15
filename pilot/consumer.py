@@ -7,7 +7,7 @@ from kafka import KafkaConsumer
 if __name__ == '__main__':
     try:
         consumer = KafkaConsumer(
-            'messages',
+            'Inventory',
             bootstrap_servers='172.16.254.3:9092',
             auto_offset_reset='earliest'
         )
