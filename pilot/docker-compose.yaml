@@ -80,7 +80,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - ./conf/.env
+      - ./config/.env
     volumes:
       - ./database/data:/var/lib/postgresql/data/
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -97,9 +97,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    volumes:
+      - ./config:/deployment
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.6
+    depends_on:
+      - postgres
 
 networks:
   priv-aeroflot-pilot-net:
