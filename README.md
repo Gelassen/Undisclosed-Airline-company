@@ -4,7 +4,6 @@
 ```
 $ git clone https://github.com/Gelassen/Aeroflot.git
 $ cd Aeroflot/pilot && docker-compose up
-$ docker-compose up
 ```
 
 Command to run to enable Kafka Connect:
@@ -147,4 +146,4 @@ $ docker volume rm -f $(docker volume ls -q)
 5. Confluent still relies on CLASSPATH in some cases, despite on it is a legacy mechanism. For postgres sink connector I had to define it in the config
 6. Use docker secrets in production environment https://docs.docker.com/engine/swarm/secrets/
 7. Remove all sensitive data like credentials from the repo and replace them. For demo purpose they has been left in repo.
-8. Such projects should be covered with integration tests. They has not been added because of demo purpose of this project and not specified requirements for them. s
+8. Such projects should be covered with integration tests. They has not been added because of demo purpose of this project and not specified requirements for them. 
