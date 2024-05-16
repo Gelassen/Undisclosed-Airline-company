@@ -7,7 +7,7 @@ $ cd Aeroflot/pilot && docker-compose up
 $ docker-compose up
 ```
 
-Command to run to enable Kafka connection:
+Command to run to enable Kafka Connect:
 
 It should be done automatically by mounting ```postgres-sink-config.json```, but it is not and this issue has not been figured out yet, REST API call as an alternative approach should be used instead:
 ```
@@ -30,26 +30,87 @@ curl -i -X PUT -H  "Content-Type:application/json" \
       "errors.log.include.messages": "true"
     }'
 ```
+
+Producers waits a bit till Kafka and Kafka Connect start up, you will see message from them in the console. 
+
+Check exported from Kafka data in database either directly over ```psql``` or over ```REST```
+
+### REST API
+
+To get all inventories by page:
+```
+http://172.16.254.6:80/api/v1/inventories
+```
+Sample reply:
+```
+[
+  {
+    "time": 1715565917000,
+    "flight": "(TYA) NORDSTAR 403",
+    "departure": 1715860453000,
+    "flight_booking_class": "S",
+    "idle_seats_count": 1
+  },
+  ...
+]
+```
+To get all inventories by next page:
+```
+http://172.16.254.6/api/v1/inventories/?page=2
+```
+Sample reply:
+```
+[
+  {
+    "time": 1715322257000,
+    "flight": "(LY) EL AL 611",
+    "departure": 1715768829000,
+    "flight_booking_class": "F",
+    "idle_seats_count": 38
+  }
+  ...
+]
+```
+To search by field (possible fields are ```flight```, ```departure```, ```flight_booking_class```):
+```
+http://172.16.254.6/api/v1/inventories/search/?flight=(LY) EL AL 611
+```
+Sample reply:
+```
+[
+  {
+    "time": 1715331626000,
+    "flight": "(LY) EL AL 611",
+    "departure": 1715781020000,
+    "flight_booking_class": "L",
+    "idle_seats_count": 9
+  },
+  {
+    "time": 1715447991000,
+    "flight": "(LY) EL AL 611",
+    "departure": 1715740686000,
+    "flight_booking_class": "G",
+    "idle_seats_count": 6
+  }
+  ...
+]
+```
+
+### Dev commands
+
 Verify Kafka config:
 ```
 curl -X GET http://172.16.254.4:8083/connectors/postgres-sink-connector/config
 ```
 
-Till this moment Kafka queue should be established. Now prepare python project's environment:
+To check plain Kafka consumer, run consumer.py:
 ```
 $ python -m venv ./venv
 $ pip install -r requirements.txt
-``` 
-
-To run Consumer and Producer, execute commands below in two separate terminals:
-```
 $ source venv/bin/activate && python consumer.py
-$ source venv/bin/activate && python producer.py
 ```
 
-Check exported from Kafka data in database either directly over ```psql``` or over ```REST```
-
-### Manual connection to docker postgres
+#### Manual connection to docker postgres
 Endpoint of database server:
 ```
 $ docker container ps
@@ -68,20 +129,7 @@ $ sudo apt-get install postgresql-client
 $ PGPASSWORD=test psql -h localhost -p 5432 -U aeroflot
 ```
 
-### Deploy REST service
-```
-$ cd /pilot/REST
-$ python -m venv ./venv
-$ source venv/bin/activate 
-$ pip install -r requirements.txt
-```
-
-To run service on localhost:8000:
-```
-(venv) $ uvicorn main:app --reload
-```
-
-### Docker hot commands
+#### Docker hot commands
 To remove ALL images:
 ```
 $ docker system prune -a
@@ -89,26 +137,6 @@ $ docker system prune -a
 To remove ALL volumes:
 ```
 $ docker volume rm -f $(docker volume ls -q)
-```
-
-### Others
-To run postgres docker image:
-```
-$ docker pull postgres:16.2
-$ docker run -itd -e POSTGRES_USER=aeroflot -e POSTGRES_PASSWORD=test -p 5432:5432 -v ./database/data:/var/lib/postgresql/data --name postgresql postgres:16.2
-```
-
-To run Kafka:
-```
-$ docker pull apache/kafka:3.7.0
-$ docker run -p 9092:9092 apache/kafka:3.7.0
-```
-
-To connect to the shell and execute shell command:
-```
-$ docker container ps 
-$ docker exec -it <container_id> /bin/sh
-(shell) $ ./kafka-topics.sh --create --topic messages --bootstrap-server localhost:9092
 ```
 
 ### Notes
