@@ -163,3 +163,4 @@ cython_debug/
 pilot/database/data/
 pilot/kafka-connect/config/secrets
 pilot/kafka-connect/config/jars
+pilot/zookeeper/data

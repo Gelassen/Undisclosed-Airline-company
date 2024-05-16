@@ -142,8 +142,9 @@ $ docker volume rm -f $(docker volume ls -q)
 ### Notes
 1. .env files SHOULD NOT be checked-in in the repository. The only reason why they are here is demo purpose and test nature of this config. For Github CI special secrets section should be used.
 2. ```KRaft``` is a preferable mechanism to use instead of ```Zookeeper```, although the current Kafka release (apache/kafka:3.7.0) still rely on ```Zookeeper```. We have to use ```Zookeeper``` right now, but in the next release ```Kafka 4.0``` it is going to be removed. 
-3. Pure implementation of ```Kafka``` and ```Kafka Connect``` faced with unresolved yet issues between ```KRaft``` and ```Zookeeper``. For mre details, please refer https://stackoverflow.com/questions/78472810/how-to-run-pure-kafka-and-kafka-connect-over-docker-compose#78472810
+3. Pure implementation of ```Kafka``` and ```Kafka Connect``` faced with unresolved yet issues between ```KRaft``` and ```Zookeeper``. For more details, please refer https://stackoverflow.com/questions/78472810/how-to-run-pure-kafka-and-kafka-connect-over-docker-compose#78472810
 4. External to docker Kafka producers using docker hostnames instead of direct IP addresses. They are not resolved automatically and possible workarounds are to try to modify hosts file on the Host machine or replace hostnames by direct ip addresses in advertise listeners properties
 5. Confluent still relies on CLASSPATH in some cases, despite on it is a legacy mechanism. For postgres sink connector I had to define it in the config
 6. Use docker secrets in production environment https://docs.docker.com/engine/swarm/secrets/
 7. Remove all sensitive data like credentials from the repo and replace them. For demo purpose they has been left in repo.
+8. Such projects should be covered with integration tests. They has not been added because of demo purpose of this project and not specified requirements for them. s
