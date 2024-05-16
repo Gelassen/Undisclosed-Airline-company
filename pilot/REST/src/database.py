@@ -1,10 +1,7 @@
 from sqlalchemy import create_engine, Column, Integer, String, BigInteger, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
 import os
-
-load_dotenv("../config/.env")
 
 Base = declarative_base()
 class InventoryDB(Base):
@@ -20,10 +17,10 @@ db_username = os.environ.get('POSTGRES_USER')
 db_password = os.environ.get('POSTGRES_PASSWORD')
 db_name = os.environ.get('POSTGRES_DB')
 db_host = os.environ.get('POSTGRESS_HOST')
-# TODO leave hardcoded values, because there is no clear way found yet
-# how to keep right config path in docker and standalone app, as well as 
-# how to pass correctly env variables to docker 
 
-SQLALCHEMY_DATABASE_URL = "postgresql://aeroflot:test@172.16.254.5/aeroflot" #f"postgresql://{db_username}:{db_password}@{db_host}/{db_name}"
+if not all([db_username, db_password, db_name, db_host]):
+    raise ValueError("Missing one or more environment variables: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRESS_HOST")
+
+SQLALCHEMY_DATABASE_URL = f"postgresql://{db_username}:{db_password}@{db_host}/{db_name}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

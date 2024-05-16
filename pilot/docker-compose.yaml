@@ -97,8 +97,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
-    volumes:
-      - ./config:/deployment
+    env_file:
+      - ./config/.env
+    # volumes:
+      # - ./config:/deployment/config
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.6
