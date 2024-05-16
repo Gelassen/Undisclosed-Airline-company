@@ -120,7 +120,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+# .env -- temporaly enable for demo purposes
 .venv
 env/
 venv/
