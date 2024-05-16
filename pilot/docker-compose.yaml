@@ -27,10 +27,6 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://172.16.254.3:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      # KAFKA_DEFAULT_REPLICATION_FACTOR: 1
-      # CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      # KAFKA_CONFLUENT_METADATA_TOPIC_REPLICATION_FACTOR: 1
-      # KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     networks:
@@ -55,8 +51,6 @@ services:
       CONNECT_STATUS_STORAGE_TOPIC: _connect-status
       CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      # CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      # CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/confluent-hub-components
       CONNECT_REPLICATION_FACTOR: 1
       CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
@@ -67,7 +61,6 @@ services:
       - ./kafka-connect/connectors:/usr/share/confluent-hub-components
       - ./kafka-connect/config:/etc/kafka-connect
       - ./kafka-connect/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.23.jar
-      # - ./kafka-connect/jdbc-driver/postgresql-42.2.23.jar:/usr/share/java/postgresql-42.2.3.jar
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.4
@@ -99,8 +92,6 @@ services:
       - "80:80"
     env_file:
       - ./config/.env
-    # volumes:
-      # - ./config:/deployment/config
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.6
