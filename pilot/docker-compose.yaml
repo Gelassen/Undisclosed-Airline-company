@@ -32,6 +32,11 @@ services:
     networks:
       priv-aeroflot-pilot-net:
         ipv4_address: 172.16.254.3
+    healthcheck:
+      test: ["CMD", "sh", "-c", "exec nc -z localhost 9092"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
   connect:
     image: confluentinc/cp-kafka-connect:6.2.0
@@ -97,6 +102,22 @@ services:
         ipv4_address: 172.16.254.6
     depends_on:
       - postgres
+    
+  kafka-producer:
+    container_name: kafka-producer
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    env_file:
+      - ./config/.env
+    networks: 
+      priv-aeroflot-pilot-net:
+        ipv4_address: 172.16.254.7
+    depends_on:
+      kafka:
+        condition: service_healthy
+      connect:
+        condition: service_started
 
 networks:
   priv-aeroflot-pilot-net:
