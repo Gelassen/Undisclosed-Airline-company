@@ -1,0 +1,11 @@
+kind: EncryptionConfig
+apiVersion: v1
+resources:
+  - resources:
+      - secrets
+    providers:
+      - aescbc:
+          keys:
+            - name: aeroflot-pilot
+              secret: sGv9pqU8jN2Axl1Ij9gAwg5u6pV+7vKzNa7kP3hJ8cE=
+      - identity: {}

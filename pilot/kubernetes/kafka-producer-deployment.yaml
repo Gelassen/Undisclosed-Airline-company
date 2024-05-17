@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: kafka-producer
-        image: kafka-producer-image:latest
+        image: localhost:5000/aeroflot-pilot/kafka-producer:latest
         env:
         - name: KAFKA_BROKER
           value: "kafka:9092"
