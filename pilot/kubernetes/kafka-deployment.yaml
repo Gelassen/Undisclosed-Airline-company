@@ -33,3 +33,7 @@ spec:
           value: "1"
         - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
           value: "1"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["sh", "-c", "until nslookup zookeeper; do echo waiting for zookeeper; sleep 2; done"]

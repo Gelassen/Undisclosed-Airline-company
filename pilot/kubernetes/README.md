@@ -1,6 +1,11 @@
-1. At this moment ```kubernetes``` configs are stored in ```/kubernetes``` subfolder. It is done for readability during migration period. Docker doesn't see containers out of its root level, therefore they have to be put in the root of the whole project.
-2. There no more way to point out ```Dockerfile``` in ```kubernetes```, now images should be pre-built and pushed to either in  Docker Hub, Google Container Registry (GCR), Amazon Elastic Container Registry (ECR) or Private Docker Register hosted within organization.
-3. Secrets are now stored differently, in ```etcd```. ```.env``` could be used to generate ```etcd``` secrets, reference to them later should be applied to kubernetes config file (e.g. services and deployments)   
+1. There no more way to point out ```Dockerfile``` in ```kubernetes```, now images should be pre-built and pushed to either in  Docker Hub, Google Container Registry (GCR), Amazon Elastic Container Registry (ECR) or Private Docker Register hosted within organization.
+2. Secrets are now stored differently, in ```etcd```. ```.env``` could be used to generate ```etcd``` secrets, reference to them later should be applied to kubernetes config file (e.g. services and deployments)   
+
+### Check the status of kubernetes
+```
+kubectl get deployments -n kafka-pipeline
+kubectl get pods -n kafka-pipeline
+```
 
 ### Setting up cluster
 ```
