@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+  namespace: kafka-pipeline
+spec:
+  serviceName: "zookeeper"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: confluentinc/cp-zookeeper:6.2.0
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOOKEEPER_CLIENT_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: zookeeper-config
+              key: ZOOKEEPER_CLIENT_PORT
+        - name: ZOOKEEPER_TICK_TIME
+          valueFrom:
+            configMapKeyRef:
+              name: zookeeper-config
+              key: ZOOKEEPER_TICK_TIME
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "echo ruok | nc 127.0.0.1 2181 | grep imok"
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/zookeeper
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi
