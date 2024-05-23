@@ -19,14 +19,14 @@ class ForecastService:
         if not all([self.kafka_host, self.kafka_port, self.kafka_topic]):
             raise ValueError("Missing one or more environment variables: KAFKA_BROKER_HOST, KAFKA_BROKER_PORT, KAFKA_TOPIC")
 
-    def fetch_data_from_postgres(self):
+    def fetch_data_from_database(self):
         session = self.db.get_session()
         query = session.query(InventoryDB).all()
         data = pd.DataFrame([item.__dict__ for item in query])
         session.close()
         return data
 
-    def save_forecast_to_postgres(self, forecasts):
+    def save_forecast_to_database(self, forecasts):
         session = self.db.get_session()
         for unique_id, forecast in forecasts.items():
             for record in forecast:
@@ -41,7 +41,7 @@ class ForecastService:
         session.commit()
         session.close()
 
-    def kafka_consumer(self):
+    def respond_on_queue(self):
         try:
             consumer = KafkaConsumer(
                 kafka_topic,
@@ -67,11 +67,3 @@ class ForecastService:
             data = self.fetch_data_from_postgres()
             self.forecast_model.retrain_model(data)
             time.sleep(86400)  # Sleep for 24 hours
-
-if __name__ == "__main__":
-    service = ForecastService()
-
-    retrain_thread = threading.Thread(target=service.retrain_model_periodically)
-    retrain_thread.start()
-
-    service.kafka_consumer()

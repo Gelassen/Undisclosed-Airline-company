@@ -16,5 +16,22 @@ CREATE TABLE "public"."Inventory" (
     CONSTRAINT "Inventory_pkey" PRIMARY KEY ("flight", "flight_booking_class")
 ) WITH (oids = false);
 
+-- Drop table if it exists
+DROP TABLE IF EXISTS "Forecasts";
+
+-- Create Forecasts table
+CREATE TABLE "public"."Forecasts" (
+    "id" serial PRIMARY KEY,
+    "unique_id" varchar(256) NOT NULL,
+    "forecast_time" bigint NOT NULL,
+    "yhat" integer NOT NULL,
+    "yhat_lower" integer NOT NULL,
+    "yhat_upper" integer NOT NULL
+);
+
+COPY "Inventory" ("id", "time", "flight", "departure", "flight_booking_class", "idle_seats_count")
+FROM 'synthetic_flight_orders.json' 
+FORMAT JSON;
+
 
 -- 2024-05-09 11:11:50.033333+00
