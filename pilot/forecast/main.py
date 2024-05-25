@@ -1,5 +1,5 @@
 import threading
-import src.forecast_service import ForecastService
+from src.forecast_service import ForecastService
 
 if __name__ == "__main__":
     service = ForecastService()

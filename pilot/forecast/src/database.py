@@ -23,12 +23,17 @@ class Forecast(Base):
     yhat_lower = Column(Integer, nullable=False)
     yhat_upper = Column(Integer, nullable=False)
 
+POSTGRES_USER="aeroflot"
+POSTGRES_PASSWORD="test"
+POSTGRES_DB="aeroflot"
+POSTGRESS_HOST=172.16.254.5
+
 class Database:
     def __init__(self):
-        self.db_username = os.environ.get('POSTGRES_USER')
-        self.db_password = os.environ.get('POSTGRES_PASSWORD')
-        self.db_name = os.environ.get('POSTGRES_DB')
-        self.db_host = os.environ.get('POSTGRESS_HOST')
+        self.db_username = POSTGRES_USER # os.environ.get('POSTGRES_USER')
+        self.db_password = POSTGRES_PASSWORD # os.environ.get('POSTGRES_PASSWORD')
+        self.db_name = POSTGRES_DB # os.environ.get('POSTGRES_DB')
+        self.db_host = POSTGRESS_HOST # os.environ.get('POSTGRESS_HOST')
 
         if not all([self.db_username, self.db_password, self.db_name, self.db_host]):
             raise ValueError("Missing one or more environment variables: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRESS_HOST")
