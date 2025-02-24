@@ -1,5 +1,7 @@
 # Undisclosed-Airline-company
 
+<a href="https://gelassen.github.io/blog/2024/11/02/case-study-developing-forecast-sales-system-for-a-major-airline.html">Case study: developing forecast sales system for a major airline</a>
+
 ### Start-up
 ```
 $ git clone https://github.com/Gelassen/Aeroflot.git
