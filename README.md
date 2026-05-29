@@ -4,7 +4,7 @@
 
 ### Start-up
 ```
-$ git clone https://github.com/Gelassen/Aeroflot.git
+$ git clone https://github.com/Gelassen/Undisclosed-Airline-company.git
 $ cd Aeroflot/pilot && docker-compose up
 ```
 
